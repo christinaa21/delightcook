@@ -1,0 +1,6 @@
+{"customer_ingredient_customization":[
+    {"custom-id":1, "order-id":1, "customer-id":1, "menu-id":1, "ingredient_id":2, "adjusted-quantity":20.0},
+    {"custom-id":2, "order-id":1, "customer-id":1, "menu-id":1, "ingredient_id":4, "adjusted-quantity":0.5},
+    {"custom-id":3, "order-id":2, "customer-id":2, "menu-id":1, "ingredient_id":3, "adjusted-quantity":10.0}
+]
+}
