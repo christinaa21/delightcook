@@ -1,8 +1,13 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, status, Request, Form
+from fastapi.encoders import jsonable_encoder
 import json
 from pydantic import BaseModel
+import jwt
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from passlib.hash import bcrypt
 from menu import check_menu
 from ingredients import check_ingredient
+from authentication import *
 
 class Customization_Item(BaseModel):
     custom_id: int
@@ -17,14 +22,14 @@ json_filename="data/customer_ingredient_customization.json"
 with open(json_filename,"r") as read_file:
     data = json.load(read_file)
 
-router = APIRouter()
+router = APIRouter(tags=["Customization"])
 
 @router.get('/')
-async def read_all_customization():
+async def read_all_customization(user: User = Depends(get_current_user)):
     return data['customer_ingredient_customization']
 
 @router.get('/{order_id}')
-async def read_order_customization(order_id: int):
+async def read_order_customization(order_id: int, user: User = Depends(get_current_user)):
     list_customization = []
     order_found = 0
     for customization_item in data['customer_ingredient_customization']:
@@ -40,7 +45,7 @@ async def read_order_customization(order_id: int):
         )
 
 @router.get('/{customer_id}')
-async def read_customer_customization(customer_id: int):
+async def read_customer_customization(customer_id: int, user: User = Depends(get_current_user)):
     list_customization = []
     customer_found = 0
     for customization_item in data['customer_ingredient_customization']:
@@ -56,7 +61,7 @@ async def read_customer_customization(customer_id: int):
         )
 
 @router.get('/{menu_id}')
-async def read_menu_customization(menu_id: int):
+async def read_menu_customization(menu_id: int, user: User = Depends(get_current_user)):
     list_customizaton = []
     menu_found = 0
     for customization_item in data['customer_ingredient_customization']:
@@ -72,7 +77,7 @@ async def read_menu_customization(menu_id: int):
         )
 
 @router.get('/{ingredient_id}')
-async def read_ingredient_customization(ingredient_id: int):
+async def read_ingredient_customization(ingredient_id: int, user: User = Depends(get_current_user)):
     list_customization = []
     ingredient_found = 0
     for customization_item in data['customer_ingredient_customization']:
@@ -88,7 +93,7 @@ async def read_ingredient_customization(ingredient_id: int):
         )
 
 @router.post('/')
-async def add_customization(item: Customization_Item):
+async def add_customization(item: Customization_Item, user: User = Depends(get_current_user)):
     item_dict = item.dict()
     if check_menu(item_dict['menu_id']) != None:
         if check_ingredient(item_dict['ingredient_id']) != None:
@@ -107,7 +112,7 @@ async def add_customization(item: Customization_Item):
             )
 
 @router.put('/')
-async def update_customization(item: Customization_Item):
+async def update_customization(item: Customization_Item, user: User = Depends(get_current_user)):
     item_dict = item.dict()
     item_found = False
     for customization_idx, customization_item in enumerate(data['customer_ingredient_customization']):

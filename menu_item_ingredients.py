@@ -1,9 +1,13 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, status, Request, Form
+from fastapi.encoders import jsonable_encoder
 import json
 from pydantic import BaseModel
+import jwt
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from passlib.hash import bcrypt
 from menu import check_menu
 from ingredients import check_ingredient
-
+from authentication import *
 
 class Composition_Item(BaseModel):
     menu_id: int
@@ -16,14 +20,14 @@ json_filename="data/menu_item_ingredients.json"
 with open(json_filename,"r") as read_file:
     data = json.load(read_file)
 
-router = APIRouter()
+router = APIRouter(tags=["Composition"])
 
 @router.get('/')
-async def read_all_composition():
+async def read_all_composition(user: User = Depends(get_current_user)):
     return data['menu_item_ingredients']
 
 @router.get('/{menu_id}')
-async def read_menu_composition(menu_id: int):
+async def read_menu_composition(menu_id: int, user: User = Depends(get_current_user)):
     list_composition = []
     menu_found = 0
     for composition_item in data['menu_item_ingredients']:
@@ -39,7 +43,7 @@ async def read_menu_composition(menu_id: int):
         )
 
 @router.get('/{ingredient_id}')
-async def read_menu_with_this_ingredient(ingredient_id: int):
+async def read_menu_with_this_ingredient(ingredient_id: int, user: User = Depends(get_current_user)):
     list_composition = []
     ingredient_found = 0
     for composition_item in data['menu_item_ingredients']:
@@ -55,7 +59,7 @@ async def read_menu_with_this_ingredient(ingredient_id: int):
         )
 
 @router.post('/')
-async def add_menu_composition(item: Composition_Item):
+async def add_menu_composition(item: Composition_Item, user: User = Depends(get_current_user)):
     item_dict = item.dict()
     if check_menu(item_dict['menu_id']) == True:
         if check_ingredient(item_dict['ingredient_id']) == True:
@@ -74,7 +78,7 @@ async def add_menu_composition(item: Composition_Item):
             )
 
 @router.put('/')
-async def update_menu_composition(item: Composition_Item):
+async def update_menu_composition(item: Composition_Item, user: User = Depends(get_current_user)):
     item_dict = item.dict()
     item_found = False
     for composition_idx, composition_item in enumerate(data['menu_item_ingredients']):

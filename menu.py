@@ -1,7 +1,11 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, status, Request, Form
+from fastapi.encoders import jsonable_encoder
 import json
 from pydantic import BaseModel
-
+import jwt
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from passlib.hash import bcrypt
+from authentication import *
 
 class Menu_Item(BaseModel):
 	menu_id: int
@@ -17,14 +21,14 @@ json_filename="data/menu_items.json"
 with open(json_filename,"r") as read_file:
 	data = json.load(read_file)
 
-router = APIRouter()
+router = APIRouter(tags=["Menu"])
 
 @router.get('/')
-async def read_all_menu():
+async def read_all_menu(user: User = Depends(get_current_user)):
 	return data['menu_items']
 
 @router.get('/{menu_id}')
-async def check_menu(menu_id: int):
+async def check_menu(menu_id: int, user: User = Depends(get_current_user)):
 	menu_found = False
 	for menu_item in data['menu_items']:
 		print(menu_item)
@@ -33,7 +37,7 @@ async def check_menu(menu_id: int):
 	return menu_found
 
 @router.get('/{menu_id}')
-async def read_menu(menu_id: int):
+async def read_menu(menu_id: int, user: User = Depends(get_current_user)):
 	for menu_item in data['menu_items']:
 		print(menu_item)
 		if menu_item['menu_id'] == menu_id:
@@ -43,7 +47,7 @@ async def read_menu(menu_id: int):
 	)
 
 @router.post('/')
-async def add_menu(item: Menu_Item):
+async def add_menu(item: Menu_Item, user: User = Depends(get_current_user)):
 	item_dict = item.dict()
 	item_found = False
 	for menu_item in data['menu_items']:
@@ -62,7 +66,7 @@ async def add_menu(item: Menu_Item):
 	)
 
 @router.put('/')
-async def update_menu(item: Menu_Item):
+async def update_menu(item: Menu_Item, user: User = Depends(get_current_user)):
 	item_dict = item.dict()
 	item_found = False
 	for menu_idx, menu_item in enumerate(data['menu_items']):
@@ -81,7 +85,7 @@ async def update_menu(item: Menu_Item):
 	)
 
 @router.delete('/{menu_id}')
-async def delete_menu(menu_id: int):
+async def delete_menu(menu_id: int, user: User = Depends(get_current_user)):
 	item_found = False
 	for menu_idx, menu_item in enumerate(data['menu_items']):
 		if menu_item['menu_id'] == menu_id:

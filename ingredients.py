@@ -1,6 +1,11 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends, status, Request, Form
+from fastapi.encoders import jsonable_encoder
 import json
 from pydantic import BaseModel
+import jwt
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from passlib.hash import bcrypt
+from authentication import *
 
 class Ingredient_Item(BaseModel):
     ingredient_id: int
@@ -11,14 +16,14 @@ json_filename = "data/ingredients.json"
 with open(json_filename,"r") as read_file:
 	data = json.load(read_file)
 
-router = APIRouter()
+router = APIRouter(tags=["Ingredients"])
 
 @router.get('/')
-async def read_all_ingredients():
+async def read_all_ingredients(user: User = Depends(get_current_user)):
 	return data['ingredients']
 
 @router.get('/{ingredient_id}')
-async def check_ingredient(ingredient_id: int):
+async def check_ingredient(ingredient_id: int, user: User = Depends(get_current_user)):
 	ingredient_found = False
 	for ingredient_item in data['ingredients']:
 		print(ingredient_item)
@@ -27,7 +32,7 @@ async def check_ingredient(ingredient_id: int):
 	return ingredient_found
 
 @router.get('/{ingredient_id}')
-async def read_ingredient(ingredient_id: int):
+async def read_ingredient(ingredient_id: int, user: User = Depends(get_current_user)):
 	for ingredient_item in data['ingredients']:
 		print(ingredient_item)
 		if ingredient_item['ingredient_id'] == ingredient_id:
@@ -37,7 +42,7 @@ async def read_ingredient(ingredient_id: int):
     )
 
 @router.post('/')
-async def add_ingredient(item: Ingredient_Item):
+async def add_ingredient(item: Ingredient_Item, user: User = Depends(get_current_user)):
 	item_dict = item.dict()
 	item_found = False
 	for ingredient_item in data['ingredients']:
@@ -56,7 +61,7 @@ async def add_ingredient(item: Ingredient_Item):
 	)
 
 @router.put('/')
-async def update_ingredient(item: Ingredient_Item):
+async def update_ingredient(item: Ingredient_Item, user: User = Depends(get_current_user)):
 	item_dict = item.dict()
 	item_found = False
 	for ingredient_idx, ingredient_item in enumerate(data['ingredients']):
@@ -73,7 +78,7 @@ async def update_ingredient(item: Ingredient_Item):
     )
 
 @router.delete('/{ingredient_id}')
-async def delete_ingredient(ingredient_id: int):
+async def delete_ingredient(ingredient_id: int, user: User = Depends(get_current_user)):
 	item_found = False
 	for ingredient_idx, ingredient_item in enumerate(data['ingredients']):
 		if ingredient_item['ingredient_id'] == ingredient_id:
