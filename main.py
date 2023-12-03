@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from menu import router as menu_router
 from ingredients import router as ingredient_router
-from menu_item_ingredients import router as composition_router
-from customer_ingredient_customization import router as customization_router
+from composition import router as composition_router
+from customization import router as customization_router
 from authentication import router as authentication_router
 
 app = FastAPI(
@@ -16,6 +16,6 @@ if __name__ == "__main__":
 
 app.include_router(menu_router, prefix="/menu_items")
 app.include_router(ingredient_router, prefix="/ingredients")
-app.include_router(composition_router, prefix="/menu_item_ingredients")
-app.include_router(customization_router, prefix="/customer_ingredient_customization")
+app.include_router(composition_router, prefix="/composition")
+app.include_router(customization_router, prefix="/customization")
 app.include_router(authentication_router)

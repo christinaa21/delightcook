@@ -22,7 +22,7 @@ router = APIRouter(tags=["Ingredients"])
 async def read_all_ingredients(user: User = Depends(get_current_user)):
 	return data['ingredients']
 
-@router.get('/{ingredient_id}')
+@router.get('/check/{ingredient_id}')
 async def check_ingredient(ingredient_id: int, user: User = Depends(get_current_user)):
 	ingredient_found = False
 	for ingredient_item in data['ingredients']:

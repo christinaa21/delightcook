@@ -7,6 +7,20 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from passlib.hash import bcrypt
 from authentication import *
 
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(json.loads(json.dumps(item)))
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+
+    def is_empty(self):
+        return len(self.items) == 0
+
 class Menu_Item(BaseModel):
 	menu_id: int
 	menu_name: str
@@ -21,20 +35,24 @@ json_filename="data/menu_items.json"
 with open(json_filename,"r") as read_file:
 	data = json.load(read_file)
 
+menu_stack = Stack()
+menu_stack.push(data['menu_items'])  # Initial state
+
 router = APIRouter(tags=["Menu"])
 
 @router.get('/')
-async def read_all_menu(user: User = Depends(get_current_user)):
-	return data['menu_items']
+async def read_all_menu(sort_by: str = None, user: User = Depends(get_current_user)):
+    menu_items = menu_stack.items[-1]
 
-@router.get('/{menu_id}')
-async def check_menu(menu_id: int, user: User = Depends(get_current_user)):
-	menu_found = False
-	for menu_item in data['menu_items']:
-		print(menu_item)
-		if menu_item['menu_id'] == menu_id:
-			menu_found = True
-	return menu_found
+    if sort_by:
+        if sort_by not in menu_items[0]:
+            raise HTTPException(
+                status_code=400, detail=f'Invalid key for sorting: {sort_by}'
+            )
+
+        menu_items.sort(key=lambda x: x[sort_by])
+
+    return menu_items
 
 @router.get('/{menu_id}')
 async def read_menu(menu_id: int, user: User = Depends(get_current_user)):
@@ -45,6 +63,16 @@ async def read_menu(menu_id: int, user: User = Depends(get_current_user)):
 	raise HTTPException(
 		status_code=404, detail=f'Menu not found!'
 	)
+
+@router.get('/check/{menu_id}')
+async def check_menu(menu_id: int, user: User = Depends(get_current_user)):
+	menu_found = False
+	for menu_item in data['menu_items']:
+		print(menu_item)
+		if menu_item['menu_id'] == menu_id:
+			menu_found = True
+	print(f"Menu ID {menu_id} found: {menu_found}")
+	return menu_found
 
 @router.post('/')
 async def add_menu(item: Menu_Item, user: User = Depends(get_current_user)):
@@ -59,6 +87,7 @@ async def add_menu(item: Menu_Item, user: User = Depends(get_current_user)):
 		data['menu_items'].append(item_dict)
 		with open(json_filename,"w") as write_file:
 			json.dump(data, write_file)
+		menu_stack.push(data['menu_items'])
 		return item_dict
 	
 	raise HTTPException(
@@ -76,6 +105,7 @@ async def update_menu(item: Menu_Item, user: User = Depends(get_current_user)):
 			
 			with open(json_filename,"w") as write_file:
 				json.dump(data, write_file)
+			menu_stack.push(data['menu_items'])
 			return "Menu updated!"
 	
 	if not item_found:
@@ -94,6 +124,7 @@ async def delete_menu(menu_id: int, user: User = Depends(get_current_user)):
 			
 			with open(json_filename,"w") as write_file:
 				json.dump(data, write_file)
+			menu_stack.push(data['menu_items'])
 			return "Menu deleted!"
 	
 	if not item_found:
