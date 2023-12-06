@@ -12,6 +12,8 @@ from authentication import *
 class Composition_Item(BaseModel):
     menu_id: int
     ingredient_id: int
+    min_quantity: float
+    max_quantity: float
     default_quantity: float
     unit: str
 

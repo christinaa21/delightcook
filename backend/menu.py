@@ -31,9 +31,18 @@ class Menu_Item(BaseModel):
 	description: str
 
 json_filename="data/menu_items.json"
+json_filename1="data/ingredients.json"
+json_filename2="data/composition.json"
+json_filename3="data/customization.json"
 
 with open(json_filename,"r") as read_file:
 	data = json.load(read_file)
+with open(json_filename1,"r") as read_file:
+	data1 = json.load(read_file)
+with open(json_filename2,"r") as read_file:
+	data2 = json.load(read_file)
+with open(json_filename3,"r") as read_file:
+	data3 = json.load(read_file)
 
 menu_stack = Stack()
 menu_stack.push(data['menu_items'])  # Initial state
@@ -54,15 +63,15 @@ async def read_all_menu(sort_by: str = None, user: User = Depends(get_current_us
 
     return menu_items
 
-@router.get('/{menu_id}')
-async def read_menu(menu_id: int, user: User = Depends(get_current_user)):
-	for menu_item in data['menu_items']:
-		print(menu_item)
-		if menu_item['menu_id'] == menu_id:
-			return menu_item
-	raise HTTPException(
-		status_code=404, detail=f'Menu not found!'
-	)
+# @router.get('/{menu_id}')
+# async def read_menu(menu_id: int, user: User = Depends(get_current_user)):
+# 	for menu_item in data['menu_items']:
+# 		print(menu_item)
+# 		if menu_item['menu_id'] == menu_id:
+# 			return menu_item
+# 	raise HTTPException(
+# 		status_code=404, detail=f'Menu not found!'
+# 	)
 
 @router.get('/check/{menu_id}')
 async def check_menu(menu_id: int, user: User = Depends(get_current_user)):
@@ -132,3 +141,38 @@ async def delete_menu(menu_id: int, user: User = Depends(get_current_user)):
 	raise HTTPException(
 		status_code=404, detail=f'Item not found!'
 	)
+
+@router.get('/{menu_id}')
+async def read_menu(menu_id: int, user: User = Depends(get_current_user)):
+    menu_item = next((item for item in data['menu_items'] if item['menu_id'] == menu_id), None)
+
+    if menu_item is None:
+        raise HTTPException(status_code=404, detail='Menu not found!')
+
+    menu_composition = [comp for comp in data2['composition'] if comp['menu_id'] == menu_id]
+
+    ingredients_list = []
+    for comp in menu_composition:
+        ingredient_id = comp['ingredient_id']
+        ingredient = next((ing for ing in data1['ingredients'] if ing['ingredient_id'] == ingredient_id), None)
+        if ingredient:
+            ingredient_data = {
+                'ingredient_id': ingredient_id,
+                'ingredient_name': ingredient['ingredient_name'],
+                'default_quantity': comp['default_quantity'],
+                'unit': comp['unit']
+            }
+            ingredients_list.append(ingredient_data)
+
+    result = {
+        'menu_id': menu_item['menu_id'],
+        'menu_name': menu_item['menu_name'],
+        'price': menu_item['price'],
+        'duration': menu_item['duration'],
+        'calories': menu_item['calories'],
+        'level': menu_item['level'],
+        'description': menu_item['description'],
+        'ingredients': ingredients_list
+    }
+
+    return result

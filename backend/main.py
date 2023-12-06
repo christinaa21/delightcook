@@ -4,6 +4,7 @@ from ingredients import router as ingredient_router
 from composition import router as composition_router
 from customization import router as customization_router
 from authentication import router as authentication_router
+from order import router as order_router
 
 app = FastAPI(
     docs_url="/docs",
@@ -19,3 +20,4 @@ app.include_router(ingredient_router, prefix="/ingredients")
 app.include_router(composition_router, prefix="/composition")
 app.include_router(customization_router, prefix="/customization")
 app.include_router(authentication_router)
+app.include_router(order_router, prefix="/order")
