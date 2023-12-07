@@ -10,11 +10,11 @@ from authentication import *
 from typing import List
 
 class Ingredient(BaseModel):
-    custom_id: int
     ingredient_id: int
     adjusted_quantity: float
 
 class Customization_Item(BaseModel):
+    custom_id: int
     Ingredients: List[Ingredient]
     order_id: int
 
@@ -31,8 +31,14 @@ async def read_all_customization(user: User = Depends(get_current_user)):
 
 @router.post('/')
 async def create_customization(customization_item: Customization_Item, user: User = Depends(get_current_user)):
+    existing_custom_ids = [customization.get('custom_id', 0) for customization in data]
+    new_custom_id = max(existing_custom_ids, default=0) + 1
+
+    ingredients_encoded = jsonable_encoder(customization_item.Ingredients)  # Convert Ingredient objects to dict
+
     new_customization = {
-        "ingredients": customization_item.ingredients,
+        "custom_id": new_custom_id,
+        "Ingredients": ingredients_encoded,  # Use the encoded ingredients
         "order_id": customization_item.order_id
     }
     data.append(new_customization)

@@ -79,13 +79,17 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
 @router.post('/users')
 async def create_user(username: str, password: str):
-    last_user_id = data['user'][-1]['customer_id'] if data['user'] else 0
+    if not data['user']:
+        last_user_id = 0
+    else:
+        last_user_id = max(user['customer_id'] for user in data['user'])
+
     user_id = last_user_id + 1
     user = jsonable_encoder(User(customer_id=user_id, username=username,
                                  password_hash=bcrypt.hash(password)))
     data['user'].append(user)
     write_data(data)
-    return {'message': 'User created successfully'}
+    return {'message': 'User created successfully', 'customer_id': user_id}
 
 @router.get('/users/me')
 async def get_user(user: User = Depends(get_current_user)):

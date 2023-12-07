@@ -48,42 +48,44 @@ export const Card: React.FC<CardProps> = ({ menu_items }) => {
                              />
                     </Box>
                     <HStack alignItems={'left'} w={'100%'} pb={4}>
-                        <Box>
-                            <Text
-                                fontSize={'20px'}
-                                fontWeight={'Bold'}
-                                color="#134074"
-                                pb={1}
-                            >
-                                {menu.menu_name}
-                            </Text>
+                        <Box width={'100%'}>
+                            <HStack align={'left'}>
+                                <Text
+                                    fontSize={'20px'}
+                                    fontWeight={'Bold'}
+                                    color="#134074"
+                                    pb={1}
+                                >
+                                    {menu.menu_name}
+                                </Text>
+                                <Spacer />
+                                <Text color="#134074">IDR {menu.price}</Text>
+                            </HStack>
                             <HStack color={"#134074"}>
-                                <FaStopwatch /><Text>{menu.duration}</Text>
+                                <FaStopwatch /><Text>{menu.duration} min</Text>
                                 <FaStar /><Text>{menu.level}</Text>
-                                <FaFire /><Text>{menu.calories}</Text>
+                                <FaFire /><Text>{menu.calories} kcal</Text>
                             </HStack>
                         </Box>
                         <Spacer></Spacer>
-                        <HStack alignItems={'top'} mt={0.5}>
-                            <Text color="#134074">IDR {menu.price}</Text>
-                        </HStack>
                     </HStack>
                     <HStack textAlign={'center'} justifyItems={'center'}>
                         <Button
-                        bgColor="#134074"
-                        color="white"
-                        _hover={{ bg: '#00027A' }}
+                        colorScheme="#134074"
+                        color="#134074"
+                        _hover={{ color: '#3FC3FE' }}
                         w="50%"
                         fontWeight={'bold'}
                         borderRadius={30}
                         mx={1}
+                        variant={'outline'}
                         >
                         Details
                         </Button>
                         <Button
                         bgColor="#134074"
                         color="white"
-                        _hover={{ bg: '#00027A' }}
+                        _hover={{ bg: '#3FC3FE' }}
                         w="50%"
                         fontWeight={'bold'}
                         borderRadius={30}

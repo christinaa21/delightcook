@@ -29,6 +29,7 @@ class Menu_Item(BaseModel):
 	calories: float
 	level: str
 	description: str
+	menu_url: str
 
 json_filename="data/menu_items.json"
 json_filename1="data/ingredients.json"
@@ -50,7 +51,7 @@ menu_stack.push(data['menu_items'])  # Initial state
 router = APIRouter(tags=["Menu"])
 
 @router.get('/')
-async def read_all_menu(sort_by: str = None, user: User = Depends(get_current_user)):
+async def read_all_menu(sort_by: str = None):
     menu_items = menu_stack.items[-1]
 
     if sort_by:
@@ -85,23 +86,25 @@ async def check_menu(menu_id: int, user: User = Depends(get_current_user)):
 
 @router.post('/')
 async def add_menu(item: Menu_Item, user: User = Depends(get_current_user)):
-	item_dict = item.dict()
-	item_found = False
-	for menu_item in data['menu_items']:
-		if menu_item['menu_id'] == item_dict['menu_id']:
-			item_found = True
-			return "Menu ID "+str(item_dict['menu_id'])+" exists."
-	
-	if not item_found:
-		data['menu_items'].append(item_dict)
-		with open(json_filename,"w") as write_file:
-			json.dump(data, write_file)
-		menu_stack.push(data['menu_items'])
-		return item_dict
-	
-	raise HTTPException(
-		status_code=404, detail=f'Item not found!'
-	)
+    # Get the highest menu_id from the data or 0 if no menu items exist
+    max_menu_id = max([menu_item['menu_id'] for menu_item in data['menu_items']], default=0)
+    # Increment the menu_id by 1 to get a new unique menu_id
+    new_menu_id = max_menu_id + 1
+
+    # Update the item_dict with the new menu_id
+    item_dict = item.dict()
+    item_dict['menu_id'] = new_menu_id
+
+    # Append the new menu item to the menu data
+    data['menu_items'].append(item_dict)
+    # Write the updated menu items back to the JSON file
+    with open(json_filename, "w") as write_file:
+        json.dump(data, write_file, indent=4)
+
+    # Update the stack
+    menu_stack.push(data['menu_items'])
+
+    return item_dict
 
 @router.put('/')
 async def update_menu(item: Menu_Item, user: User = Depends(get_current_user)):
@@ -172,6 +175,7 @@ async def read_menu(menu_id: int, user: User = Depends(get_current_user)):
         'calories': menu_item['calories'],
         'level': menu_item['level'],
         'description': menu_item['description'],
+		'menu_url': menu_item['menu_url'],
         'ingredients': ingredients_list
     }
 

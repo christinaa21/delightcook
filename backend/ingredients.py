@@ -43,22 +43,22 @@ async def read_ingredient(ingredient_id: int, user: User = Depends(get_current_u
 
 @router.post('/')
 async def add_ingredient(item: Ingredient_Item, user: User = Depends(get_current_user)):
-	item_dict = item.dict()
-	item_found = False
-	for ingredient_item in data['ingredients']:
-		if ingredient_item['ingredient_id'] == item_dict['ingredient_id']:
-			item_found = True
-			return "Ingredient ID "+str(item_dict['ingredient_id'])+" exists."
-	
-	if not item_found:
-		data['ingredients'].append(item_dict)
-		with open(json_filename,"w") as write_file:
-			json.dump(data, write_file)
+    # Get the highest ingredient_id from the data or 0 if no ingredients exist
+    max_ingredient_id = max([ingredient['ingredient_id'] for ingredient in data['ingredients']], default=0)
+    # Increment the ingredient_id by 1 to get a new unique ingredient_id
+    new_ingredient_id = max_ingredient_id + 1
+    # Create a new ingredient item with the new ingredient_id and the name provided
+    new_ingredient_item = {
+        "ingredient_id": new_ingredient_id,
+        "ingredient_name": item.ingredient_name
+    }
+    # Append the new ingredient item to the ingredient data
+    data['ingredients'].append(new_ingredient_item)
+    # Write the updated ingredients back to the JSON file
+    with open(json_filename, "w") as write_file:
+        json.dump(data, write_file, indent=4)
 
-		return item_dict
-	raise HTTPException(
-		status_code=404, detail=f'Item not found!'
-	)
+    return new_ingredient_item
 
 @router.put('/')
 async def update_ingredient(item: Ingredient_Item, user: User = Depends(get_current_user)):
