@@ -5,10 +5,6 @@ export default function Menu(){
     return(
         <ChakraProvider>
             <Navbar status={true} />
-            <Image
-                src="./landing.png"
-                objectFit={'cover'}
-                height={"440px"}/>
             <Heading>
                 Menu
             </Heading>
