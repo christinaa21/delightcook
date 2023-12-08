@@ -41,7 +41,8 @@ export default function Menu(){
                 <Card
                 key={data.menu_id}
                 menu_items={[data]}
-                status = {true}/>
+                status = {true}
+                detail = {false}/>
               ))}
           </CardWrapper>
       </ChakraProvider>

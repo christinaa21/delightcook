@@ -22,12 +22,14 @@ export interface CardProps {
         level: string;
         menu_url: string;
     }[],
-    status: boolean
+    status: boolean,
+    detail: boolean
 }
 
-export const Card: React.FC<CardProps> = ({ menu_items, status }) => {
+export const Card: React.FC<CardProps> = ({ menu_items, status, detail }) => {
     const isLogin = (status == true);
     const isNotLogin = (status == false);
+    const isNotDetail = (detail == false);
     return(
         <>
         {menu_items.map((menu) => (
@@ -74,19 +76,21 @@ export const Card: React.FC<CardProps> = ({ menu_items, status }) => {
                         <Spacer></Spacer>
                     </HStack>
                     <HStack textAlign={'center'} justifyItems={'center'}>
-                        <Link href={`/menu/${menu.menu_id}`} passHref>
-                            <Button
-                            colorScheme="#134074"
-                            color="#134074"
-                            _hover={{ color: '#3FC3FE' }}
-                            fontWeight={'bold'}
-                            borderRadius={30}
-                            mx={1}
-                            variant={'outline'}
-                            >
-                            Details
-                            </Button>
-                        </Link>
+                        { isNotDetail && 
+                            <Link href={`/menu/${menu.menu_id}`} passHref>
+                                <Button
+                                colorScheme="#134074"
+                                color="#134074"
+                                _hover={{ color: '#3FC3FE' }}
+                                fontWeight={'bold'}
+                                borderRadius={30}
+                                mx={1}
+                                variant={'outline'}
+                                >
+                                Details
+                                </Button>
+                            </Link>
+                        }
                         { isLogin && 
                             <Button
                             bgColor="#134074"
