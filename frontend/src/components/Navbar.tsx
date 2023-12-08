@@ -1,3 +1,4 @@
+"use client";
 import {
     Box,
     Flex,
@@ -10,6 +11,7 @@ import {
     Heading
   } from "@chakra-ui/react";
 import '@fontsource/cinzel'
+import Logout from "./Logout";
 
 export default function Navbar(props: {status: boolean}){
     const isLogin = (props.status == true);
@@ -114,7 +116,7 @@ export default function Navbar(props: {status: boolean}){
                         variant={"ghost"}
                         mx={1}
                     >
-                        <a href="./logout">Logout</a>
+                        <Logout></Logout>
                     </Button>
                 </HStack>
             }

@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 export default function Menu(){
     return(
         <ChakraProvider>
-            <Navbar status={false} />
+            <Navbar status={true} />
             <Box
               backgroundImage={"./landing.png"}
               backgroundSize={'contain'}

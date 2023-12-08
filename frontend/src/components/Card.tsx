@@ -80,7 +80,7 @@ export const Card: React.FC<CardProps> = ({ menu_items }) => {
                         mx={1}
                         variant={'outline'}
                         >
-                        Details
+                         <a href="./{menu_id}">Details</a>
                         </Button>
                         <Button
                         bgColor="#134074"
@@ -91,7 +91,7 @@ export const Card: React.FC<CardProps> = ({ menu_items }) => {
                         borderRadius={30}
                         mx={1}
                         >
-                        Order
+                         <a href="./order">Order</a>
                         </Button>
                     </HStack>
                 </Stack>

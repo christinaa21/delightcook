@@ -64,18 +64,8 @@ async def read_all_menu(sort_by: str = None):
 
     return menu_items
 
-# @router.get('/{menu_id}')
-# async def read_menu(menu_id: int, user: User = Depends(get_current_user)):
-# 	for menu_item in data['menu_items']:
-# 		print(menu_item)
-# 		if menu_item['menu_id'] == menu_id:
-# 			return menu_item
-# 	raise HTTPException(
-# 		status_code=404, detail=f'Menu not found!'
-# 	)
-
 @router.get('/check/{menu_id}')
-async def check_menu(menu_id: int, user: User = Depends(get_current_user)):
+async def check_menu(menu_id: int):
 	menu_found = False
 	for menu_item in data['menu_items']:
 		print(menu_item)
@@ -146,7 +136,7 @@ async def delete_menu(menu_id: int, user: User = Depends(get_current_user)):
 	)
 
 @router.get('/{menu_id}')
-async def read_menu(menu_id: int, user: User = Depends(get_current_user)):
+async def read_menu(menu_id: int):
     menu_item = next((item for item in data['menu_items'] if item['menu_id'] == menu_id), None)
 
     if menu_item is None:
