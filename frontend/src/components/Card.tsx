@@ -10,6 +10,7 @@ import {
 import '@fontsource/cinzel';
 import { FaStar } from "react-icons/fa";
 import { FaStopwatch, FaFire } from "react-icons/fa6";
+import Link from 'next/link';
 
 export interface CardProps {
     menu_items: {
@@ -20,10 +21,13 @@ export interface CardProps {
         calories: number;
         level: string;
         menu_url: string;
-    }[];
+    }[],
+    status: boolean
 }
 
-export const Card: React.FC<CardProps> = ({ menu_items }) => {
+export const Card: React.FC<CardProps> = ({ menu_items, status }) => {
+    const isLogin = (status == true);
+    const isNotLogin = (status == false);
     return(
         <>
         {menu_items.map((menu) => (
@@ -70,29 +74,45 @@ export const Card: React.FC<CardProps> = ({ menu_items }) => {
                         <Spacer></Spacer>
                     </HStack>
                     <HStack textAlign={'center'} justifyItems={'center'}>
-                        <Button
-                        colorScheme="#134074"
-                        color="#134074"
-                        _hover={{ color: '#3FC3FE' }}
-                        w="50%"
-                        fontWeight={'bold'}
-                        borderRadius={30}
-                        mx={1}
-                        variant={'outline'}
-                        >
-                         <a href="./{menu_id}">Details</a>
-                        </Button>
-                        <Button
-                        bgColor="#134074"
-                        color="white"
-                        _hover={{ bg: '#3FC3FE' }}
-                        w="50%"
-                        fontWeight={'bold'}
-                        borderRadius={30}
-                        mx={1}
-                        >
-                         <a href="./order">Order</a>
-                        </Button>
+                        <Link href={`/menu/${menu.menu_id}`} passHref>
+                            <Button
+                            colorScheme="#134074"
+                            color="#134074"
+                            _hover={{ color: '#3FC3FE' }}
+                            fontWeight={'bold'}
+                            borderRadius={30}
+                            mx={1}
+                            variant={'outline'}
+                            >
+                            Details
+                            </Button>
+                        </Link>
+                        { isLogin && 
+                            <Button
+                            bgColor="#134074"
+                            color="white"
+                            _hover={{ bg: '#3FC3FE' }}
+                            w="50%"
+                            fontWeight={'bold'}
+                            borderRadius={30}
+                            mx={1}
+                            >
+                            <a href="./order">Order</a>
+                            </Button>
+                        }
+                        { isNotLogin && 
+                            <Button
+                            bgColor="#134074"
+                            color="white"
+                            _hover={{ bg: '#3FC3FE' }}
+                            w="50%"
+                            fontWeight={'bold'}
+                            borderRadius={30}
+                            mx={1}
+                            >
+                            <a href="./login">Order</a>
+                            </Button>
+                        }
                     </HStack>
                 </Stack>
             </Box>

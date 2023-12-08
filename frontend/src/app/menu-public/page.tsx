@@ -25,7 +25,7 @@ export default function Menu(){
 
   return(
       <ChakraProvider>
-          <Navbar status={true} />
+          <Navbar status={false} />
           <Heading
           textAlign={'center'}
           alignItems={'center'}
@@ -41,7 +41,7 @@ export default function Menu(){
                 <Card
                 key={data.menu_id}
                 menu_items={[data]}
-                status = {true}/>
+                status={false}/>
               ))}
           </CardWrapper>
       </ChakraProvider>

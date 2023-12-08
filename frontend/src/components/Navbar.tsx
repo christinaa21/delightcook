@@ -62,7 +62,7 @@ export default function Navbar(props: {status: boolean}){
                         variant={"ghost"}
                         mx={1}
                     >
-                        <a href="./menu">Menu</a>
+                        <a href="./menu-public">Menu</a>
                     </Button>
                     <Button
                         fontWeight="bold" 

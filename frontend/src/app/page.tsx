@@ -47,7 +47,7 @@ export default function Menu(){
                     rounded={'20px'}
                     width={'40%'}
                 >
-                    <a href="./menu">See Menus</a>
+                    <a href="./menu-public">See Menus</a>
                 </Button>
               </Box>
             </Box>
