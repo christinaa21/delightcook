@@ -1,15 +1,12 @@
 "use client";
 import {
-    Box,
-    Flex,
     Spacer,
-    Text,
-    Link,
     Image,
     Button,
     HStack,
     Heading
   } from "@chakra-ui/react";
+import Link from "next/link";
 import '@fontsource/cinzel'
 import Logout from "./Logout";
 
@@ -31,18 +28,22 @@ export default function Navbar(props: {status: boolean}){
           borderBottom={"1px solid #CBD5E0"}
         >
             <HStack>
-                <Image
-                    src="./logo.png"
-                    alt="Logo"
-                    ml={8}
-                    mr={2}
-                    h={12}
-                    objectFit={"contain"}
-                />
-                <Heading
-                fontFamily={'cinzel'}>
-                    Delight Cook
-                </Heading>
+                <Link href={"/"}>
+                    <Image
+                        src="../logo.png"
+                        alt="Logo"
+                        ml={8}
+                        mr={2}
+                        h={12}
+                        objectFit={"contain"}
+                    />
+                </Link>
+                <Link href={"/"}>
+                    <Heading
+                    fontFamily={'cinzel'}>
+                        Delight Cook
+                    </Heading>
+                </Link>
             </HStack>
             <Spacer display={{base: "none", md: "flex"}}></Spacer>
             { isNotLogin && 

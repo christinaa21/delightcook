@@ -76,8 +76,23 @@ export const Card: React.FC<CardProps> = ({ menu_items, status, detail }) => {
                         <Spacer></Spacer>
                     </HStack>
                     <HStack textAlign={'center'} justifyItems={'center'}>
-                        { isNotDetail && 
+                        { isNotDetail && isLogin &&
                             <Link href={`/menu/${menu.menu_id}`} passHref>
+                                <Button
+                                colorScheme="#134074"
+                                color="#134074"
+                                _hover={{ color: '#3FC3FE' }}
+                                fontWeight={'bold'}
+                                borderRadius={30}
+                                mx={1}
+                                variant={'outline'}
+                                >
+                                Details
+                                </Button>
+                            </Link>
+                        }
+                        { isNotDetail && isNotLogin &&
+                            <Link href={`/menu-public/${menu.menu_id}`} passHref>
                                 <Button
                                 colorScheme="#134074"
                                 color="#134074"
@@ -114,7 +129,7 @@ export const Card: React.FC<CardProps> = ({ menu_items, status, detail }) => {
                             borderRadius={30}
                             mx={1}
                             >
-                            <a href="./login">Order</a>
+                            <a href="../login">Order</a>
                             </Button>
                         }
                     </HStack>

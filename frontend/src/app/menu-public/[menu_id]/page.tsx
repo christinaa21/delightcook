@@ -45,7 +45,7 @@ export default function MenuDetail(){
 
    return(
        <ChakraProvider>
-          <Detail menu_items={selected_menu} status={true} />
+          <Detail menu_items={selected_menu} status={false} />
        </ChakraProvider>
    )
 }
