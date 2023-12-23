@@ -107,17 +107,18 @@ export const Card: React.FC<CardProps> = ({ menu_items, status, detail }) => {
                             </Link>
                         }
                         { isLogin && 
-                            <Button
-                            bgColor="#134074"
-                            color="white"
-                            _hover={{ bg: '#3FC3FE' }}
-                            w="50%"
-                            fontWeight={'bold'}
-                            borderRadius={30}
-                            mx={1}
-                            >
-                            <a href="./order">Order</a>
-                            </Button>
+                            <Link href={`/order/${menu.menu_id}`} passHref>
+                                <Button
+                                bgColor="#134074"
+                                color="white"
+                                _hover={{ bg: '#3FC3FE' }}
+                                fontWeight={'bold'}
+                                borderRadius={30}
+                                mx={1}
+                                >
+                                Order
+                                </Button>
+                            </Link>
                         }
                         { isNotLogin && 
                             <Button
@@ -129,7 +130,7 @@ export const Card: React.FC<CardProps> = ({ menu_items, status, detail }) => {
                             borderRadius={30}
                             mx={1}
                             >
-                            <a href="../login">Order</a>
+                            <a href="/login">Order</a>
                             </Button>
                         }
                     </HStack>

@@ -27,24 +27,46 @@ export default function Navbar(props: {status: boolean}){
           marginX="auto"
           borderBottom={"1px solid #CBD5E0"}
         >
-            <HStack>
-                <Link href={"/"}>
-                    <Image
-                        src="../logo.png"
-                        alt="Logo"
-                        ml={8}
-                        mr={2}
-                        h={12}
-                        objectFit={"contain"}
-                    />
-                </Link>
-                <Link href={"/"}>
-                    <Heading
-                    fontFamily={'cinzel'}>
-                        Delight Cook
-                    </Heading>
-                </Link>
-            </HStack>
+            { isNotLogin &&
+                <HStack>
+                    <Link href={"/"}>
+                        <Image
+                            src="/logo.png"
+                            alt="Logo"
+                            ml={8}
+                            mr={2}
+                            h={12}
+                            objectFit={"contain"}
+                        />
+                    </Link>
+                    <Link href={"/"}>
+                        <Heading
+                        fontFamily={'cinzel'}>
+                            Delight Cook
+                        </Heading>
+                    </Link>
+                </HStack>
+            }
+            { isLogin &&
+                <HStack>
+                    <Link href={"/home"}>
+                        <Image
+                            src="../logo.png"
+                            alt="Logo"
+                            ml={8}
+                            mr={2}
+                            h={12}
+                            objectFit={"contain"}
+                        />
+                    </Link>
+                    <Link href={"/home"}>
+                        <Heading
+                        fontFamily={'cinzel'}>
+                            Delight Cook
+                        </Heading>
+                    </Link>
+                </HStack>
+            }
             <Spacer display={{base: "none", md: "flex"}}></Spacer>
             { isNotLogin && 
                 <HStack
@@ -63,7 +85,7 @@ export default function Navbar(props: {status: boolean}){
                         variant={"ghost"}
                         mx={1}
                     >
-                        <a href="./menu-public">Menu</a>
+                        <a href="/menu-public">Menu</a>
                     </Button>
                     <Button
                         fontWeight="bold" 
@@ -74,7 +96,7 @@ export default function Navbar(props: {status: boolean}){
                         variant={"ghost"}
                         mx={1}
                     >
-                        <a href="./login">Login</a>
+                        <a href="/login">Login</a>
                     </Button>
                 </HStack>
             }
@@ -95,7 +117,7 @@ export default function Navbar(props: {status: boolean}){
                         variant={"ghost"}
                         mx={1}
                     >
-                        <a href="./menu">Menu</a>
+                        <a href="/menu">Menu</a>
                     </Button>
                     <Button
                         fontWeight="bold" 
@@ -106,7 +128,7 @@ export default function Navbar(props: {status: boolean}){
                         variant={"ghost"}
                         mx={1}
                     >
-                        <a href="./history">History</a>
+                        <a href="/history">History</a>
                     </Button>
                     <Button
                         fontWeight="bold" 

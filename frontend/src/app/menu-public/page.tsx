@@ -1,10 +1,10 @@
 'use client'
 
-import { ChakraProvider, Heading, Image, Spacer } from "@chakra-ui/react";
+import { ChakraProvider, Heading, Spacer } from "@chakra-ui/react";
 import Navbar from "@/components/Navbar";
 import '@fontsource/cinzel';
 import CardWrapper from "@/components/CardWrapper";
-import { Card, CardProps } from "@/components/Card";
+import { Card } from "@/components/Card";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 

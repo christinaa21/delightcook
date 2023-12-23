@@ -39,10 +39,6 @@ export default function MenuDetail(){
     fetchData();
   }, [id]);
 
-  console.log("id", id);
-  console.log("menu", menuItems);
-  console.log("selected", selected_menu);
-
    return(
        <ChakraProvider>
           <Detail menu_items={selected_menu} status={true} />
