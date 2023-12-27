@@ -152,6 +152,9 @@ async def read_menu(menu_id: int):
             ingredient_data = {
                 'ingredient_id': ingredient_id,
                 'ingredient_name': ingredient['ingredient_name'],
+				'ingredient_url': ingredient['ingredient_url'],
+				'min_quantity': comp['min_quantity'],
+				'max_quantity': comp['max_quantity'],
                 'default_quantity': comp['default_quantity'],
                 'unit': comp['unit']
             }

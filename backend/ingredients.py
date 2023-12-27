@@ -8,8 +8,9 @@ from passlib.hash import bcrypt
 from authentication import *
 
 class Ingredient_Item(BaseModel):
-    ingredient_id: int
-    ingredient_name: str
+	ingredient_id: int
+	ingredient_name: str
+	ingredient_url: str
 
 json_filename = "data/ingredients.json"
 
@@ -50,7 +51,8 @@ async def add_ingredient(item: Ingredient_Item, user: User = Depends(get_current
     # Create a new ingredient item with the new ingredient_id and the name provided
     new_ingredient_item = {
         "ingredient_id": new_ingredient_id,
-        "ingredient_name": item.ingredient_name
+        "ingredient_name": item.ingredient_name,
+		"ingredient_url": item.ingredient_url
     }
     # Append the new ingredient item to the ingredient data
     data['ingredients'].append(new_ingredient_item)
