@@ -80,6 +80,46 @@ export default function Order(){
      fetchData();
    }, [id]);
 
+   function onSubmit(e: any){
+    const order = {
+        order_id: -1,
+        customer_id: userData?.customer_id,
+        menu_id: id,
+        menu_quantity: quantity
+    };
+    
+    const customization = {
+        custom_id: -1,
+        Ingredients: JSON.parse(localStorage.getItem(`menu_${id}`) || '[]'),
+        order_id: -1,
+    };
+
+    console.log("Customization", customization);
+
+    try {
+        axios.post("http://127.0.0.1:8000/order", order, {
+           headers: {
+             Authorization: `Bearer ${localStorage.getItem("token")}`,
+           },
+         });
+      } catch (error) {
+        console.log('error adding order data: ', error);
+    }
+
+    if (customization.Ingredients != null){
+        try {
+            axios.post("http://127.0.0.1:8000/customization", customization, {
+               headers: {
+                 Authorization: `Bearer ${localStorage.getItem("token")}`,
+               },
+             });
+          } catch (error) {
+            console.log('error adding order data: ', error);
+        }
+        localStorage.removeItem(`menu_${id}`);
+    } 
+   }
+
     return(
         <ChakraProvider>
             <Navbar status={true} />
@@ -224,6 +264,7 @@ export default function Order(){
                         fontWeight={'bold'}
                         borderRadius={30}
                         mx={1}
+                        onClick={onSubmit}
                         >
                         Confirm Order
                         </Button>
