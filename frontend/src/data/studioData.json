@@ -1,0 +1,92 @@
+[
+    {
+      "id": "1",
+      "studioName": "Dhanas Studio",
+      "priceRange": "IDR 55k-150k",
+      "address": "Jl. Perhubungan 6 Bl DD 16 Jati Pulo Gadung Jakarta Timur DKI Jakarta",
+      "availableHours": "00:00 - 24:00",
+      "maximumParticipant": 100,
+      "rating": "4.7",
+      "imgSrc": ["https://drive.google.com/uc?export=view&id=1Bwmhq_ORWC-r-9vDrpdK3o_ME7gUe8fT", "https://drive.google.com/uc?export=view&id=1KpnKpTNdsbw6wKD0R-HGOBC6tyohpLT", "https://drive.google.com/uc?export=view&id=1qye-seTZjDQohVrNeYwgheoOk0zEkPMq", "https://drive.google.com/uc?export=view&id=1v_S7G1A8hBUwwk4dWJk5XgcWMmz36Cxd", "https://drive.google.com/uc?export=view&id=1_EV79dyt7CwutyJqSjzJqb_wxtNXz009"],
+      "description": "Dhanas Studio, located in the heart of Jakarta, offers a spacious and acoustically optimized environment for music creation. Equipped with state-of-the-art recording gear, it's perfect for both amateur and professional musicians.",
+      "facilities": [
+        "High-Speed Wi-Fi",
+        "Coffee Bar",
+        "Air Conditioning",
+        "Parking Space",
+        "Lounge Area"
+      ],
+      "instruments": [
+        "2 Guitars",
+        "1 Drum Set",
+        "3 Microphones",
+        "1 Keyboard",
+        "2 Amplifiers"
+      ],
+      "studioRooms": [
+        { "roomName": "Studio 1", "price": 55000 },
+        { "roomName": "Studio 2", "price": 100000 },
+        { "roomName": "Studio 3", "price": 150000 }
+      ]
+    },
+    {
+      "id": "2",
+      "studioName": "Soffa Music Studio",
+      "priceRange": "IDR 75k-250k",
+      "address": "Jl. Surapati No.197, Sukaluyu, Kec. Cibeunying Kaler, Kota Bandung, Jawa Barat 40123",
+      "availableHours": "00:00 - 24:00",
+      "maximumParticipant": 350,
+      "rating": "4.9",
+      "imgSrc": ["https://drive.google.com/uc?export=view&id=1DlnvJ8DLNkpd1d0LDm5KZiHkINCRsBX8","https://drive.google.com/uc?export=view&id=16gDbbgv1N_nDGq3061p8tW7583384IWF","https://drive.google.com/uc?export=view&id=1pQcISJARf-LUegJt2R-Zo7y2B2sf5aba","https://drive.google.com/uc?export=view&id=1AzkqLJmCSIXfwxdWMIpejxZ1puX8dpaj","https://drive.google.com/uc?export=view&id=14BFoJ0MvnCg-4l9N8BNeDpk0w3zZ9_eP" ],
+      "description": "Soffa Music Studio in Bandung offers a cozy and inspiring setting for music production. Ideal for band rehearsals and solo practices, the studio has a warm ambiance that sparks creativity.",
+      "facilities": [
+        "Refreshment Area",
+        "Air Conditioning",
+        "Private Restrooms",
+        "Ample Parking",
+        "Soundproof Rooms"
+      ],
+      "instruments": [
+        "1 Grand Piano",
+        "4 Microphones",
+        "2 Bass Guitars",
+        "1 Saxophone",
+        "3 Synthesizers"
+      ],
+      "studioRooms": [
+        { "roomName": "Studio 1", "price": 75000 },
+        { "roomName": "Studio 2", "price": 150000 },
+        { "roomName": "Studio 3", "price": 250000 }
+      ]
+    },
+    {
+      "id": "3",
+      "studioName": "Studio 12",
+      "priceRange": "IDR 50k-200k",
+      "address": "Jl. Linggawastu No.5, Tamansari, Kec. Bandung Wetan, Kota Bandung, Jawa Barat 40116",
+      "availableHours": "00:00 - 24:00",
+      "maximumParticipant": 150,
+      "rating": "4.8",
+      "imgSrc": ["https://drive.google.com/uc?export=view&id=1WAMqQsiY0SM2Um-HrlNr7qDRWmpJsRUK", "https://drive.google.com/uc?export=view&id=1wRq61e_JayIPfh_RzQP0ucxYYTcxLkI_", "https://drive.google.com/uc?export=view&id=1pEgZuvVLKngVMtoCoZDNT1q5XNi-q1i0", "https://drive.google.com/uc?export=view&id=1ERVO1o3s-iiQuckrQMriOAieZ7MxsLf7", "https://drive.google.com/uc?export=view&id=1lrFMfk_zg8smQCQGp5yvo2KpBBLqeddL"],
+      "description": "Studio 12 is a dynamic and versatile space for music enthusiasts. Located in Bandung, it's perfect for both intimate acoustic sessions and full band setups, offering a unique sound experience.",
+      "facilities": [
+        "Lounge Area",
+        "Snack Bar",
+        "Climate Control",
+        "Secure Equipment Storage",
+        "Reception Services"
+      ],
+      "instruments": [
+        "2 Electric Guitars",
+        "1 Acoustic Drum Kit",
+        "3 Keyboards",
+        "2 Bass Guitars",
+        "4 Microphones"
+      ],
+      "studioRooms": [
+        {"roomName": "Studio 1", "price": 50000},
+        {"roomName": "Studio 2", "price": 125000},
+        {"roomName": "Studio 3", "price": 200000}
+      ]
+    }
+  ]

@@ -19,9 +19,12 @@ class Customization_Item(BaseModel):
     order_id: int
 
 json_filename="data/customization.json"
+json_filename1="data/order.json"
 
 with open(json_filename,"r") as read_file:
     data = json.load(read_file)
+with open(json_filename1,"r") as read_file:
+    data1 = json.load(read_file)
 
 router = APIRouter(tags=["Customization"])
 
@@ -36,15 +39,15 @@ async def create_customization(customization_item: Customization_Item, user: Use
 
     ingredients_encoded = jsonable_encoder(customization_item.Ingredients)  # Convert Ingredient objects to dict
 
+    existing_order_ids = [order.get('order_id', 0) for order in data1['order']]
+    new_order_id = max(existing_order_ids, default=0) + 1
+
     new_customization = {
         "custom_id": new_custom_id,
         "Ingredients": ingredients_encoded,  # Use the encoded ingredients
-        "order_id": customization_item.order_id
+        "order_id": new_order_id
     }
     data.append(new_customization)
-
-    with open(json_filename, "w") as write_file:
-        json.dump(data, write_file, indent=2)
 
     return new_customization
 

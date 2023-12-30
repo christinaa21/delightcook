@@ -40,6 +40,7 @@ export default function Customize(){
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const [ingredientItems, setIngredientItems] = useState<IngredientCardProps[]>([]);
     const [id, setId] = useState<Number>();
+    const [customizationData, setCustomizationData] = useState([]);
 
     useEffect(() => {
         const path = window.location.pathname;
@@ -58,6 +59,32 @@ export default function Customize(){
         fetchData();
       }, [id]);
 
+    useEffect(() => {
+        // Load customization data from local storage
+        const storedCustomizationData = localStorage.getItem('customizationData');
+        if (storedCustomizationData) {
+          setCustomizationData(JSON.parse(storedCustomizationData));
+        }
+    }, []);
+      
+
+    const updateCustomizationData = (customId, ingredients) => {
+        const newCustomization = {
+          custom_id: customId,
+          ingredients: ingredients.map((ingredient) => ({
+            ingredient_id: ingredient.ingredient_id,
+            adjusted_quantity: ingredient.adjusted_quantity,
+          })),
+          order_id: id,
+        };
+      
+        const updatedData = [...customizationData, newCustomization];
+        setCustomizationData(updatedData);
+      
+        // Save to local storage
+        localStorage.setItem('customizationData', JSON.stringify(updatedData));
+    };
+
     console.log("menu:", menuItems);
     console.log("ingredients:",ingredientItems);
 
@@ -74,7 +101,8 @@ export default function Customize(){
             </Heading>
             <Spacer></Spacer>
             <CardWrapper columns={{base: 1, sm: 1, md: 2, lg: 2}}>
-                <IngredientCard ingredients={ingredientItems}/>
+                <IngredientCard ingredients={ingredientItems}
+                updateCustomizationData={updateCustomizationData}/>
             </CardWrapper>
             <Spacer></Spacer>
             <Box textAlign={'center'} alignItems={'center'} m={3}>

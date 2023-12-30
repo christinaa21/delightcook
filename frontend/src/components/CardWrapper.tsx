@@ -16,7 +16,7 @@ const CardWrapper: React.FC<CardWrapperProps> = (props) => {
                 w='auto'
                 h='full'
                 pb={4}
-                pt={4} 
+                pt={props.pt ?? 4} 
                 mt={4}
                 overflowX={'auto'}
                 overflowY={'auto'} 

@@ -19,6 +19,8 @@ import axios from 'axios';
 import { FaStar } from "react-icons/fa";
 import { FaStopwatch, FaFire } from "react-icons/fa6";
 import Link from 'next/link';
+import StudioCard from '@/components/StudioCard';
+import CardWrapper from '@/components/CardWrapper';
 
 interface MenuItem {
     menu_id: number;
@@ -147,9 +149,14 @@ export default function Order(){
                     </HStack>
                 </HStack>
             </Box>
-            <Text px={50} mt={4} fontSize={'x-large'} fontWeight={'bold'} color={'#134074'}>
-                Mau sewa studio musik?
+            <Text px={50} mt={4}fontSize={'x-large'} fontWeight={'bold'} color={'#134074'}>
+                Mau tambah sewa studio musik?
             </Text>
+            <Box pl={7}>
+                <CardWrapper columns={{base: 1, sm: 1, md: 2, lg: 3}} pt={0}>
+                    <StudioCard/>
+                </CardWrapper>
+            </Box>
         </ChakraProvider>
     )
 }
