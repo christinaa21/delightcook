@@ -1,15 +1,10 @@
 "use client";
 
 import {
-    Box,
-    useBreakpointValue,
     Image,
     VStack,
     Input,
     Button,
-    AlertIcon,
-    Alert,
-    FormControl,
     Heading,
     Text,
     HStack
