@@ -5,6 +5,10 @@ import {
   Spacer,
   Button,
   HStack,
+  FormControl,
+  FormLabel,
+  useNumberInput,
+  Input
 } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 
@@ -20,51 +24,47 @@ export interface IngredientCardProps {
   }[];
 }
 
-interface QuantityPlaceholderProps {
-minQuantity: number;
-maxQuantity: number;
-defaultQuantity: number;
-unit: string;
-updateCustomizationData: (adjustedQuantity: number) => void;
+interface HookUsageProps {
+  ingredientId: number;
+  defaultQuantity: number;
+  minQuantity: number;
+  maxQuantity: number;
+  unit: string;
+  onQuantityChange: (ingredientId: number, adjustedQuantity: number) => void;
 }
 
-const QuantityPlaceholder: React.FC<QuantityPlaceholderProps> = ({
-minQuantity,
-maxQuantity,
-defaultQuantity,
-unit,
-updateCustomizationData,
-}) => {
-const [quantity, setQuantity] = useState(defaultQuantity);
+function HookUsage({ ingredientId, defaultQuantity, minQuantity, maxQuantity, unit, onQuantityChange }: HookUsageProps) {
+  const { getInputProps, getIncrementButtonProps, getDecrementButtonProps, value } =
+    useNumberInput({
+      step: 1,
+      defaultValue: defaultQuantity,
+      min: minQuantity,
+      max: maxQuantity,
+    });
 
-const handleIncrement = () => {
-  if (quantity < maxQuantity) {
-    setQuantity(quantity + 1);
-    updateCustomizationData(quantity + 1);
+    const inc = getIncrementButtonProps()
+    const dec = getDecrementButtonProps()
+    const input = getInputProps()
+
+    const handleQuantityChange = (newQuantity: number) => {
+      onQuantityChange(ingredientId, newQuantity);
+    };
+  
+    return (
+      <HStack color={'#134074'} maxW='230px'>
+        <Button {...dec} fontSize={"xl"} rounded={'20px'} onClick={() => handleQuantityChange(parseFloat(value))}>-</Button>
+        <Input {...input} />
+        <Text>{unit}</Text>
+        <Button {...inc} fontSize={"xl"} rounded={'20px'} onClick={() => handleQuantityChange(parseFloat(value))}>+</Button>
+      </HStack>
+    )
   }
-};
 
-const handleDecrement = () => {
-  if (quantity > minQuantity) {
-    setQuantity(quantity - 1);
-    updateCustomizationData(quantity - 1);
-  }
-};
-
-return (
-  <HStack color={'#134074'} boxSize={'auto'}>
-    <Button onClick={handleDecrement} fontSize={"xl"} rounded={'20px'}>-</Button>
-    <Text fontSize={"20px"} fontWeight={"bold"} px={3} mx={0.5} borderBottom={'1px'}>{quantity}</Text>
-    <Text fontSize={"20px"}>{unit}</Text>
-    <Button onClick={handleIncrement} fontSize={"xl"} rounded={'20px'}>+</Button>
-  </HStack>
-);
-};
-
-export const IngredientCard: React.FC<IngredientCardProps & { updateCustomizationData: (id: number, adjustedQuantity: number) => void }> = ({ ingredients, updateCustomizationData }) => {
+export const IngredientCard: React.FC<IngredientCardProps & { onQuantityChange: (ingredientId: number, adjustedQuantity: number) => void }> = ({ ingredients, onQuantityChange }) => {
   return(
       <>
       {ingredients.map((ingredient) => (
+        <FormControl key={ingredient.ingredient_id}>
           <Box
               key={ingredient.ingredient_id}
               w={"auto"}
@@ -84,26 +84,26 @@ export const IngredientCard: React.FC<IngredientCardProps & { updateCustomizatio
                   height={'100px'}
                   pr={3}
                       />
-                  <Text
+                  <FormLabel
                       fontSize={'20px'}
                       fontWeight={'Bold'}
                       pb={1}
                       pr={75}
                   >
                       {ingredient.ingredient_name}
-                  </Text>
+                  </FormLabel>
                   <Spacer></Spacer>
-                  <QuantityPlaceholder
-                      minQuantity={ingredient.min_quantity}
-                      maxQuantity={ingredient.max_quantity}
-                      defaultQuantity={ingredient.default_quantity}
-                      unit={ingredient.unit}
-                      updateCustomizationData={(adjustedQuantity) => {
-                        updateCustomizationData(ingredient.ingredient_id, adjustedQuantity);
-                      }}
+                  <HookUsage
+                    ingredientId={ingredient.ingredient_id}
+                    defaultQuantity={ingredient.default_quantity}
+                    minQuantity={ingredient.min_quantity}
+                    maxQuantity={ingredient.max_quantity}
+                    unit={ingredient.unit}
+                    onQuantityChange={onQuantityChange}
                   />
               </HStack>
           </Box>
+        </FormControl>
       ))}
       </>
   )

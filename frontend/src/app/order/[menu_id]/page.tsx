@@ -5,7 +5,6 @@ import {
     Text,
     Image,
     Spacer,
-    Stack,
     Button,
     HStack,
     ChakraProvider,

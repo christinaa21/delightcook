@@ -5,7 +5,6 @@ import {
     Button,
     ChakraProvider,
     Heading,
-    HStack,
     Box
   } from '@chakra-ui/react';
 import Navbar from "@/components/Navbar";
@@ -40,7 +39,7 @@ export default function Customize(){
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const [ingredientItems, setIngredientItems] = useState<IngredientCardProps[]>([]);
     const [id, setId] = useState<Number>();
-    const [customizationData, setCustomizationData] = useState([]);
+    const [customizationData, setCustomizationData] = useState<any[]>([]);
 
     useEffect(() => {
         const path = window.location.pathname;
@@ -52,6 +51,12 @@ export default function Customize(){
             const menuItemsResponse = await axios.get(`http://127.0.0.1:8000/menu_items/${id}`);
             setMenuItems(menuItemsResponse.data);
             setIngredientItems(menuItemsResponse.data.ingredients);
+
+            const initialCustomizationData = menuItemsResponse.data.ingredients.map((ingredient) => ({
+                ingredient_id: ingredient.ingredient_id,
+                adjusted_quantity: ingredient.default_quantity,
+              }));
+              setCustomizationData(initialCustomizationData);
           } catch (error) {
             console.log('error fetching data: ', error);
           }
@@ -59,31 +64,21 @@ export default function Customize(){
         fetchData();
       }, [id]);
 
-    useEffect(() => {
-        // Load customization data from local storage
-        const storedCustomizationData = localStorage.getItem('customizationData');
-        if (storedCustomizationData) {
-          setCustomizationData(JSON.parse(storedCustomizationData));
-        }
-    }, []);
-      
+      const handleQuantityChange = (ingredientId: number, adjustedQuantity: number) => {
+        const updatedCustomizationData = customizationData.map((custom) => {
+          if (custom.ingredient_id === ingredientId) {
+            return { ...custom, adjusted_quantity: adjustedQuantity };
+          }
+          return custom;
+        });
+        setCustomizationData(updatedCustomizationData);
+      };
 
-    const updateCustomizationData = (customId, ingredients) => {
-        const newCustomization = {
-          custom_id: customId,
-          ingredients: ingredients.map((ingredient) => ({
-            ingredient_id: ingredient.ingredient_id,
-            adjusted_quantity: ingredient.adjusted_quantity,
-          })),
-          order_id: id,
-        };
-      
-        const updatedData = [...customizationData, newCustomization];
-        setCustomizationData(updatedData);
-      
-        // Save to local storage
-        localStorage.setItem('customizationData', JSON.stringify(updatedData));
-    };
+      const saveCustomizationToLocalStorage = () => {
+        const menuKey = `menu_${id}`;
+        localStorage.setItem(menuKey, JSON.stringify(customizationData));
+        // Optionally, you can also send the data to your backend here using axios.post('/api/customization', customizationData)
+      };
 
     console.log("menu:", menuItems);
     console.log("ingredients:",ingredientItems);
@@ -102,7 +97,7 @@ export default function Customize(){
             <Spacer></Spacer>
             <CardWrapper columns={{base: 1, sm: 1, md: 2, lg: 2}}>
                 <IngredientCard ingredients={ingredientItems}
-                updateCustomizationData={updateCustomizationData}/>
+                onQuantityChange={handleQuantityChange}/>
             </CardWrapper>
             <Spacer></Spacer>
             <Box textAlign={'center'} alignItems={'center'} m={3}>
@@ -116,6 +111,7 @@ export default function Customize(){
                         fontWeight={'bold'}
                         borderRadius={30}
                         fontSize={'20px'}
+                        onClick={saveCustomizationToLocalStorage}
                     >
                         Save
                     </Button>

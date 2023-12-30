@@ -49,6 +49,9 @@ async def create_customization(customization_item: Customization_Item, user: Use
     }
     data.append(new_customization)
 
+    with open(json_filename, "w") as write_file:
+        json.dump(data, write_file, indent=2)
+
     return new_customization
 
 # @router.get('/order/{order_id}')
