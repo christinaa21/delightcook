@@ -9,7 +9,8 @@ import {
     HStack,
     ChakraProvider,
     Heading,
-    VStack
+    VStack,
+    Divider
   } from '@chakra-ui/react';
 import Navbar from "@/components/Navbar";
 import '@fontsource/cinzel';
@@ -20,6 +21,7 @@ import { FaStopwatch, FaFire } from "react-icons/fa6";
 import Link from 'next/link';
 import StudioCard from '@/components/StudioCard';
 import CardWrapper from '@/components/CardWrapper';
+import Footer from "@/components/Footer";
 
 interface MenuItem {
     menu_id: number;
@@ -31,6 +33,12 @@ interface MenuItem {
     description: string;
     menu_url: string;
   }
+
+interface UserData {
+    customer_id: number;
+    username: string;
+    role: string;
+}
 
 export default function Order(){
     const [quantity, setQuantity] = useState(1);
@@ -46,6 +54,7 @@ export default function Order(){
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
     const [selected_menu, setSelectedMenu] = useState<MenuItem>();
     const [id, setId] = useState<Number>();
+    const [userData, setUserData] = useState<UserData>();
  
     useEffect(() => {
      const path = window.location.pathname;
@@ -55,7 +64,13 @@ export default function Order(){
      const fetchData = async () => {
        try {
          const menuItemsResponse = await axios.get('http://127.0.0.1:8000/menu_items/');
+         const userDataResponse = await axios.get('http://127.0.0.1:8000/users/me', {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          });
          setMenuItems(menuItemsResponse.data);
+         setUserData(userDataResponse.data);
          const selected = menuItemsResponse.data.find((s: { menu_id: Number | undefined; }) => s.menu_id === id);
          setSelectedMenu(selected);
        } catch (error) {
@@ -156,6 +171,66 @@ export default function Order(){
                     <StudioCard/>
                 </CardWrapper>
             </Box>
+            <Text px={50} mt={4} fontSize={'x-large'} fontWeight={'bold'} color={'#134074'}>
+                Ringkasan Belanjamu
+            </Text>
+            <VStack px={50} mt={2} align={'left'} color={'#134074'}>
+                <HStack px={4}>
+                    <Text>
+                        Total Harga Meal Kit
+                    </Text>
+                    <Spacer></Spacer>
+                    <Text>
+                        {quantity} x IDR {selected_menu?.price} =
+                    </Text>
+                    <Text
+                        fontWeight={'Bold'}
+                    >
+                        IDR {selected_menu?.price * quantity}
+                    </Text>
+                </HStack>
+                <HStack px={4}>
+                    <Text>
+                        Total Harga Studio Musik
+                    </Text>
+                    <Spacer></Spacer>
+                    <Text
+                        fontWeight={'Bold'}
+                    >
+                        IDR {selected_menu?.price * quantity}
+                    </Text>
+                </HStack>
+                <Divider borderColor={'#134074'} />
+                <HStack px={4}>
+                    <Text
+                        fontSize={'18px'}
+                        fontWeight={'Bold'}>
+                        Total Belanja
+                    </Text>
+                    <Spacer></Spacer>
+                    <Text
+                        fontSize={'18px'}
+                        fontWeight={'Bold'}
+                    >
+                        IDR {(selected_menu?.price * quantity) + ((selected_menu?.price * quantity))}
+                    </Text>
+                </HStack>
+                <HStack justifyContent={'right'} p={1}>
+                    <Link href={'/success'}>
+                        <Button
+                        bgColor="#134074"
+                        color="white"
+                        _hover={{ bg: '#3FC3FE' }}
+                        fontWeight={'bold'}
+                        borderRadius={30}
+                        mx={1}
+                        >
+                        Confirm Order
+                        </Button>
+                    </Link>
+                </HStack>
+            </VStack>
+            <Footer />
         </ChakraProvider>
     )
 }

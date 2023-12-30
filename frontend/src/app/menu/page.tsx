@@ -7,6 +7,7 @@ import CardWrapper from "@/components/CardWrapper";
 import { Card, CardProps } from "@/components/Card";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Footer from "@/components/Footer";
 
 export default function Menu(){
   const [menu_items, set_menu_items] = useState([]);
@@ -45,6 +46,7 @@ export default function Menu(){
                 detail = {false}/>
               ))}
           </CardWrapper>
+          <Footer />
       </ChakraProvider>
   )
 }

@@ -14,6 +14,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import CardWrapper from '@/components/CardWrapper';
 import { IngredientCard, IngredientCardProps } from '@/components/IngredientCard';
+import Footer from "@/components/Footer";
 
 interface MenuItem{
     menu_id: number;
@@ -117,6 +118,7 @@ export default function Customize(){
                     </Button>
                 </Link>
             </Box>
+            <Footer />
         </ChakraProvider>
     )
 }

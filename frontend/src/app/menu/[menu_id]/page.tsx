@@ -4,6 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import Detail from "@/components/Detail";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Footer from "@/components/Footer";
 
 interface MenuItem {
   menu_id: number;
@@ -42,6 +43,7 @@ export default function MenuDetail(){
    return(
        <ChakraProvider>
           <Detail menu_items={selected_menu} status={true} />
+          <Footer />
        </ChakraProvider>
    )
 }

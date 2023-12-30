@@ -63,14 +63,15 @@ export default function LargeWithNewsletter() {
   return (
     <Box
       bg={'#F2FBFF'}
-      color={'#134074'}>
+      color={'#134074'}
+      mt={10}>
       <Container as={Stack} maxW={'6xl'} py={10}>
         <SimpleGrid
           templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 1fr 2fr' }}
           spacing={8}>
           <Stack spacing={6}>
             <HStack boxSize={'50%'}>
-              <Image src = {"./logo.png"} objectFit={'contain'}/>
+              <Image src = {"../logo.png"} objectFit={'contain'}/>
               <Heading
                 fontFamily={'cinzel'}>
                 Delight Cook
