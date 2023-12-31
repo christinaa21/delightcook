@@ -25,7 +25,7 @@
   },
   {
     "custom_id": 3,
-    "Ingredients": [
+    "ingredients": [
       {
         "ingredient_id": 2,
         "adjusted_quantity": 100.0

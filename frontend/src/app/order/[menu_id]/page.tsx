@@ -90,7 +90,7 @@ export default function Order(){
     
     const customization = {
         custom_id: -1,
-        Ingredients: JSON.parse(localStorage.getItem(`menu_${id}`) || '[]'),
+        ingredients: JSON.parse(localStorage.getItem(`menu_${id}`) || '[]'),
         order_id: -1,
     };
 
@@ -106,7 +106,7 @@ export default function Order(){
         console.log('error adding order data: ', error);
     }
 
-    if (customization.Ingredients != null){
+    if (customization.ingredients != null){
         try {
             axios.post("http://127.0.0.1:8000/customization", customization, {
                headers: {

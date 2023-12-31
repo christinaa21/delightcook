@@ -20,11 +20,20 @@ class Customization_Item(BaseModel):
 
 json_filename="data/customization.json"
 json_filename1="data/order.json"
+json_filename2="data/menu_items.json"
+json_filename3="data/ingredients.json"
+json_filename4="data/composition.json"
 
 with open(json_filename,"r") as read_file:
     data = json.load(read_file)
 with open(json_filename1,"r") as read_file:
     data1 = json.load(read_file)
+with open(json_filename2,"r") as read_file:
+    data2 = json.load(read_file)
+with open(json_filename3,"r") as read_file:
+    data3 = json.load(read_file)
+with open(json_filename4,"r") as read_file:
+    data4 = json.load(read_file)
 
 router = APIRouter(tags=["Customization"])
 
@@ -54,107 +63,61 @@ async def create_customization(customization_item: Customization_Item, user: Use
 
     return new_customization
 
-# @router.get('/order/{order_id}')
-# async def read_order_customization(order_id: int, user: User = Depends(get_current_user)):
-#     list_customization = []
-#     order_found = 0
-#     for customization_item in data['customization']:
-#         print(customization_item)
-#         if customization_item['order_id'] == order_id:
-#             order_found += 1
-#             list_customization.append(customization_item)
-#     if order_found != 0:
-#         return list_customization
-#     else:
-#         raise HTTPException(
-#             status_code=404, detail=f'Order not found!'
-#         )
+@router.get('/history', response_model=List[dict])
+async def read_history(user: User = Depends(get_current_user)):
+    orders = data1["order"]
+    menu_items = data2["menu_items"]
+    ingredients = data3["ingredients"]
+    composition = data4["composition"]
+    customizations = data
 
-# @router.get('/customer/{customer_id}')
-# async def read_customer_customization(customer_id: int, user: User = Depends(get_current_user)):
-#     list_customization = []
-#     customer_found = 0
-#     for customization_item in data['customization']:
-#         print(customization_item)
-#         if customization_item['customer_id'] == customer_id:
-#             customer_found += 1
-#             list_customization.append(customization_item)
-#     if customer_found != 0:
-#         return list_customization
-#     else:
-#         raise HTTPException(
-#             status_code=404, detail=f'Customer not found!'
-#         )
+    history_data = []
+    for order in orders:
+        menu_id = order['menu_id']
+        menu_quantity = order['menu_quantity']
 
-# @router.get('/ingredient/{ingredient_id}')
-# async def read_ingredient_customization(ingredient_id: int, user: User = Depends(get_current_user)):
-#     list_customization = []
-#     ingredient_found = 0
-#     for customization_item in data['customization']:
-#         print(customization_item)
-#         if customization_item['ingredient_id'] == ingredient_id:
-#             ingredient_found += 1
-#             list_customization.append(customization_item)
-#     if ingredient_found != 0:
-#         return list_customization
-#     else:
-#         raise HTTPException(
-#             status_code=404, detail=f'Ingredient not found!'
-#         )
+        menu_detail = next((menu for menu in menu_items if menu['menu_id'] == menu_id), None)
 
-# @router.post('/')
-# async def add_customization(item: Customization_Item, user: User = Depends(get_current_user)):
-#     item_dict = item.dict()
-#     if check_ingredient(item_dict['ingredient_id']):
-#         item_found = False
-#         for customization_item in data['customization']:
-#             if (customization_item['ingredient_id'] == item_dict['ingredient_id']):
-#                 item_found = True
-#                 update_customization(item)
-#         if not item_found:
-#             data['customization'].append(item_dict)
-#             with open(json_filename, "w") as write_file:
-#                 json.dump(data, write_file)
-#             return item_dict
-#         raise HTTPException(
-#             status_code=404, detail=f'Item not found!'
-#         )
-#     else:
-#         raise HTTPException(
-#             status_code=404, detail=f'Ingredient ID not found!'
-#         )
+        if menu_detail:
+            menu_composition = [comp for comp in composition if comp['menu_id'] == menu_id]
+            customization = next((custom for custom in customizations if custom['order_id'] == order['order_id']), None)
+            history_item = {
+                "order_id": order['order_id'],
+                "custom_id": customization['custom_id'] if customization else None,
+                "customer_id": order['customer_id'],
+                "menu_id": menu_id,
+                "menu_quantity": menu_quantity,
+                "menu_name": menu_detail['menu_name'],
+                "price": menu_detail['price'],
+                "duration": menu_detail['duration'],
+                "calories": menu_detail['calories'],
+                "level": menu_detail['level'],
+                "description": menu_detail['description'],
+                "menu_url": menu_detail['menu_url'],
+                "ingredients": []
+            }
 
-# @router.put('/')
-# async def update_customization(item: Customization_Item, user: User = Depends(get_current_user)):
-#     item_dict = item.dict()
-#     item_found = False
-#     for customization_idx, customization_item in enumerate(data['customization']):
-#         if (customization_item['ingredient_id'] == item_dict['ingredient_id']):
-#             item_found = True
-#             data['customization'][customization_idx] = item_dict
-#             with open(json_filename, "w") as write_file:
-#                 json.dump(data, write_file)
-#             return "Customization updated!"
-#     if not item_found:
-#         return "Ingredient ID not found!"
-#     raise HTTPException(
-#         status_code=404, detail=f'Item not found!'
-#     )
+            for comp_item in menu_composition:
+                ingredient_id = comp_item['ingredient_id']
+                ingredient_detail = next((ing for ing in ingredients if ing['ingredient_id'] == ingredient_id), None)
+                
+                adjusted_quantity = None
+                if customization:
+                    for ing in customization['ingredients']:
+                        if ingredient_id == ing['ingredient_id']:
+                            adjusted_quantity = ing['adjusted_quantity']
+                
+                if ingredient_detail:
+                    ingredient_data = {
+                        "ingredient_id": ingredient_id,
+                        "ingredient_name": ingredient_detail['ingredient_name'],
+                        "ingredient_url": ingredient_detail['ingredient_url'],
+                        "default_quantity": comp_item['default_quantity'],
+                        "adjusted_quantity": adjusted_quantity,
+                        "unit": comp_item['unit']
+                    }
+                    history_item['ingredients'].append(ingredient_data)
 
-# @router.delete('/{custom_id}')
-# async def delete_customization(custom_id: int, user: User = Depends(get_current_user)):
-# 	item_found = False
-# 	for customization_idx, customization_item in enumerate(data['customization']):
-# 		if customization_item['custom_id'] == custom_id:
-# 			item_found = True
-# 			data['customization'].pop(customization_idx)
-			
-# 			with open(json_filename,"w") as write_file:
-# 				json.dump(data, write_file)
-# 			return "Customization deleted!"
-	
-# 	if not item_found:
-# 		return "Custom ID not found!"
-# 	raise HTTPException(
-# 		status_code=404, detail=f'Item not found!'
-# 	)
+            history_data.append(history_item)
+
+    return history_data
