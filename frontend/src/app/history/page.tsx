@@ -1,16 +1,9 @@
 'use client'
 
 import {
-    Box,
-    Text,
-    Image,
     Spacer,
-    Button,
-    HStack,
     ChakraProvider,
     Heading,
-    VStack,
-    Divider
   } from '@chakra-ui/react';
 import Navbar from "@/components/Navbar";
 import '@fontsource/cinzel';
@@ -92,7 +85,6 @@ export default function History(){
             color={'#134074'}>
                 Order History
             </Heading>
-            <Spacer></Spacer>
             <CardWrapper columns={{base: 1, sm: 1, md: 2, lg: 2}}>
                 <HistoryCard history={historyData} />
             </CardWrapper>
