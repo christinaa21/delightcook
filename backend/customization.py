@@ -15,7 +15,7 @@ class Ingredient(BaseModel):
 
 class Customization_Item(BaseModel):
     custom_id: int
-    Ingredients: List[Ingredient]
+    ingredients: List[Ingredient]
     order_id: int
 
 json_filename="data/customization.json"
@@ -46,14 +46,14 @@ async def create_customization(customization_item: Customization_Item, user: Use
     existing_custom_ids = [customization.get('custom_id', 0) for customization in data]
     new_custom_id = max(existing_custom_ids, default=0) + 1
 
-    ingredients_encoded = jsonable_encoder(customization_item.Ingredients)  # Convert Ingredient objects to dict
+    ingredients_encoded = jsonable_encoder(customization_item.ingredients)
 
     existing_order_ids = [order.get('order_id', 0) for order in data1['order']]
     new_order_id = max(existing_order_ids, default=0) + 1
 
     new_customization = {
         "custom_id": new_custom_id,
-        "Ingredients": ingredients_encoded,  # Use the encoded ingredients
+        "ingredients": ingredients_encoded,
         "order_id": new_order_id
     }
     data.append(new_customization)

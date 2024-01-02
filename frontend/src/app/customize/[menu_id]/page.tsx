@@ -78,7 +78,6 @@ export default function Customize(){
       const saveCustomizationToLocalStorage = () => {
         const menuKey = `menu_${id}`;
         localStorage.setItem(menuKey, JSON.stringify(customizationData));
-        // Optionally, you can also send the data to your backend here using axios.post('/api/customization', customizationData)
       };
 
     console.log("menu:", menuItems);

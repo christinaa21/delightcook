@@ -55,6 +55,8 @@ export default function Order(){
     const [selected_menu, setSelectedMenu] = useState<MenuItem>();
     const [id, setId] = useState<Number>();
     const [userData, setUserData] = useState<UserData>();
+
+    const session = JSON.parse(localStorage.getItem(`studio`) || '[]');
  
     useEffect(() => {
      const path = window.location.pathname;
@@ -94,8 +96,8 @@ export default function Order(){
         order_id: -1,
     };
 
-    console.log("Customization", customization);
-
+    console.log("custom", customization);
+    console.log("session", session);
     try {
         axios.post("http://127.0.0.1:8000/order", order, {
            headers: {
@@ -110,14 +112,31 @@ export default function Order(){
         try {
             axios.post("http://127.0.0.1:8000/customization", customization, {
                headers: {
+                "Content-Type": "application/json",
                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                 accept: "application/json",
                },
              });
           } catch (error) {
-            console.log('error adding order data: ', error);
+            console.log('error adding customization data: ', error);
         }
         localStorage.removeItem(`menu_${id}`);
-    } 
+    }
+
+    if (session != null){
+        try{
+            axios.post("http://127.0.0.1:8000/soundspace", session, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    accept: "application/json",
+                }
+            });
+        } catch (error) {
+            console.log('error adding session data: ', error);
+        }
+        localStorage.removeItem(`studio`);
+    }
    }
 
     return(
@@ -231,14 +250,24 @@ export default function Order(){
                 </HStack>
                 <HStack px={4}>
                     <Text>
-                        Total Harga Studio Musik
+                        Total Harga Studio Musik:
                     </Text>
+                    { session.studio_name != null &&
+                        <Text>{session.studio_name}</Text>
+                    }
                     <Spacer></Spacer>
-                    <Text
-                        fontWeight={'Bold'}
-                    >
-                        IDR {selected_menu?.price * quantity}
-                    </Text>
+                    { session.studio_name != null &&
+                        <Text
+                            fontWeight={'Bold'}
+                        >
+                            IDR {session.total_fee}
+                        </Text>
+                    }
+                    { session.studio_name == null &&
+                        <Text>
+                            -
+                        </Text>
+                    }
                 </HStack>
                 <Divider borderColor={'#134074'} />
                 <HStack px={4}>
@@ -248,12 +277,22 @@ export default function Order(){
                         Total Belanja
                     </Text>
                     <Spacer></Spacer>
-                    <Text
-                        fontSize={'18px'}
-                        fontWeight={'Bold'}
-                    >
-                        IDR {(selected_menu?.price * quantity) + ((selected_menu?.price * quantity))}
-                    </Text>
+                    { session.total_fee != null &&
+                        <Text
+                            fontSize={'18px'}
+                            fontWeight={'Bold'}
+                        >
+                            IDR {(selected_menu?.price * quantity) + (session?.total_fee)}
+                        </Text>
+                    }
+                    { session.total_fee == null &&
+                        <Text
+                            fontSize={'18px'}
+                            fontWeight={'Bold'}
+                        >
+                            IDR {(selected_menu?.price * quantity)}
+                        </Text>
+                    }
                 </HStack>
                 <HStack justifyContent={'right'} p={1}>
                     <Link href={'/success'}>
