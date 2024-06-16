@@ -60,6 +60,10 @@ function HookUsage({ ingredientId, defaultQuantity, minQuantity, maxQuantity, un
     )
   }
 
+interface IngredientCardPropsWithOnQuantityChange extends IngredientCardProps {
+  onQuantityChange: (ingredientId: number, adjustedQuantity: number) => void;
+}
+
 export const IngredientCard: React.FC<IngredientCardProps & { onQuantityChange: (ingredientId: number, adjustedQuantity: number) => void }> = ({ ingredients, onQuantityChange }) => {
   return(
       <>

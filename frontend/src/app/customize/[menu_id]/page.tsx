@@ -40,7 +40,7 @@ interface MenuItem {
 
 export default function Customize(){
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
-    const [ingredientItems, setIngredientItems] = useState<IngredientCardProps[]>([]);
+    const [ingredientItems, setIngredientItems] = useState<Ingredient[]>([]);
     const [id, setId] = useState<Number>();
     const [customizationData, setCustomizationData] = useState<any[]>([]);
 
