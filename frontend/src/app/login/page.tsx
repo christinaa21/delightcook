@@ -53,7 +53,7 @@ export default function Login(){
           spacing={"20px"}
           color={'#134074'}
         >
-          <Image src={"./logo.png"} height={"150px"} />
+          <Image src={"./logo.png"} height={"150px"} alt="Logo" />
           <Heading fontFamily={'cinzel'} fontSize={'xx-large'}>Login</Heading>
           <form onSubmit={handleLogin}>
             <VStack spacing={'1px'}>
@@ -104,7 +104,7 @@ export default function Login(){
             </VStack>
           </form>
           <HStack>
-            <Text>Don't have an account?</Text>
+            <Text>Do not have an account?</Text>
             <Button
                 variant='link'
                 _hover={{

@@ -137,7 +137,7 @@ export default function HistoryDetail(){
         </Text>
         <VStack px={50} mt={2} align={'left'} color={'#134074'}>
             {selectedHistory?.ingredients.map((item) => (
-              <VStack align={'left'} px={4}>
+              <VStack key={item.ingredient_id} align={'left'} px={4}>
                 { item.adjusted_quantity != null && item.adjusted_quantity != item.default_quantity &&
                   <HStack fontWeight={'bold'}>
                     <Text>{item.ingredient_name}</Text>

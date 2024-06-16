@@ -35,7 +35,7 @@ export default function Menu(){
                 display={{base: "none", md: "flex"}}
                 mb={7}
                 textShadow={'2px 2px 25px #134074'}>
-                Embark on a culinary journey with Delight Cook, where we eliminate the hassle and elevate your kitchen experience. Our chef-inspired meal kits feature premium, fresh ingredients, bringing joy and convenience to your table. Say goodbye to mealtime stress and hello to delightful cooking. Ready to explore our menus? Click "See Menus" and indulge in the simplicity of a delicious meal. 🍽️✨
+                Embark on a culinary journey with Delight Cook, where we eliminate the hassle and elevate your kitchen experience. Our chef-inspired meal kits feature premium, fresh ingredients, bringing joy and convenience to your table. Say goodbye to mealtime stress and hello to delightful cooking. Ready to explore our menus? Click &quot;See Menus&quot; and indulge in the simplicity of a delicious meal. 🍽️✨
                 </Text>
                 <Button
                     fontWeight="bold" 

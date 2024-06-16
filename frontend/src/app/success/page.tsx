@@ -19,7 +19,7 @@ export default function Success(){
           spacing={"20px"}
           color={'#134074'}
         >
-            <Image src={"./success.png"} height={"180px"} />
+            <Image src={"./success.png"} height={"180px"} alt="Success" />
             <Heading fontFamily={'cinzel'} fontSize={'xx-large'} fontWeight={'bold'}>Thank You For Ordering!</Heading>
             <Text>Your meal kit will arrive tomorrow. See you soon!</Text>
             <HStack>

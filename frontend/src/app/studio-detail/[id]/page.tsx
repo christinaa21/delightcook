@@ -233,6 +233,7 @@ const Page = () => {
             {studio.imgSrc.map((image, index) => (
               <Image
                 objectFit={'cover'}
+                key={index}
                 src={image}
                 alt={`slide-${index}`}
                 width={'auto'}

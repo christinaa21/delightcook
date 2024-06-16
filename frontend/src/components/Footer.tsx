@@ -71,7 +71,7 @@ export default function LargeWithNewsletter() {
           spacing={8}>
           <Stack spacing={6}>
             <HStack boxSize={'50%'}>
-              <Image src = {"../logo.png"} objectFit={'contain'}/>
+              <Image src = {"../logo.png"} objectFit={'contain'} alt='Logo'/>
               <Heading
                 fontFamily={'cinzel'}>
                 Delight Cook

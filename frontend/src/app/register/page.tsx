@@ -55,7 +55,7 @@ import {
         spacing={"20px"}
         color={"#134074"}
       >
-        <Image src={"./logo.png"} height={"150px"} />
+        <Image src={"./logo.png"} height={"150px"} alt="Logo"/>
         <Heading fontFamily={"cinzel"} fontSize={"xx-large"}>
           Register
         </Heading>
