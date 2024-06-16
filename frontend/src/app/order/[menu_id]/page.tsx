@@ -217,7 +217,9 @@ export default function Order(){
                             fontSize={'20px'}
                             fontWeight={'Bold'}
                         >
-                            IDR {selected_menu?.price * quantity}
+                            IDR {selected_menu?.price && quantity
+                            ? selected_menu.price * quantity
+                            : 0}
                         </Text>
                     </HStack>
                 </HStack>
@@ -245,7 +247,9 @@ export default function Order(){
                     <Text
                         fontWeight={'Bold'}
                     >
-                        IDR {selected_menu?.price * quantity}
+                        IDR {selected_menu?.price && quantity
+                            ? selected_menu.price * quantity
+                            : 0}
                     </Text>
                 </HStack>
                 <HStack px={4}>
@@ -282,7 +286,7 @@ export default function Order(){
                             fontSize={'18px'}
                             fontWeight={'Bold'}
                         >
-                            IDR {(selected_menu?.price * quantity) + (session?.total_fee)}
+                            IDR {((selected_menu?.price ?? 0) * (quantity ?? 0)) + (session?.total_fee ?? 0)}
                         </Text>
                     }
                     { session.total_fee == null &&
@@ -290,7 +294,9 @@ export default function Order(){
                             fontSize={'18px'}
                             fontWeight={'Bold'}
                         >
-                            IDR {(selected_menu?.price * quantity)}
+                            IDR {selected_menu?.price && quantity
+                            ? selected_menu.price * quantity
+                            : 0}
                         </Text>
                     }
                 </HStack>

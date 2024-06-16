@@ -127,7 +127,9 @@ export default function HistoryDetail(){
                         fontSize={'20px'}
                         fontWeight={'Bold'}
                     >
-                        IDR {selectedHistory?.price * selectedHistory?.menu_quantity}
+                        IDR {selectedHistory?.price && selectedHistory?.menu_quantity
+                        ? selectedHistory.price * selectedHistory.menu_quantity
+                        : 0}
                     </Text>
                 </HStack>
             </HStack>
@@ -181,7 +183,9 @@ export default function HistoryDetail(){
                 <Text
                     fontWeight={'Bold'}
                 >
-                    IDR {selectedHistory?.price * selectedHistory?.menu_quantity}
+                    IDR {selectedHistory?.price && selectedHistory?.menu_quantity
+                    ? selectedHistory.price * selectedHistory.menu_quantity
+                    : 0}
                 </Text>
             </HStack>
             <Divider borderColor={'#134074'} />
@@ -196,7 +200,9 @@ export default function HistoryDetail(){
                     fontSize={'18px'}
                     fontWeight={'Bold'}
                 >
-                    IDR {(selectedHistory?.price * selectedHistory?.menu_quantity)}
+                    IDR {selectedHistory?.price && selectedHistory?.menu_quantity
+                    ? selectedHistory.price * selectedHistory.menu_quantity
+                    : 0}
                 </Text>
             </HStack>
             <HStack justifyContent={'right'} p={1}>
