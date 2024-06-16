@@ -16,24 +16,26 @@ import CardWrapper from '@/components/CardWrapper';
 import { IngredientCard, IngredientCardProps } from '@/components/IngredientCard';
 import Footer from "@/components/Footer";
 
-interface MenuItem{
-    menu_id: number;
-    menu_name: string;
-    price: number;
-    duration: number;
-    calories: number;
-    level: string;
-    description: string;
-    menu_url: string;
-    ingredients: {
-        ingredient_id: number;
-        ingredient_name: string;
-        ingredient_url: string;
-        min_quantity: number;
-        max_quantity: number;
-        default_quantity: number;
-        unit: string;
-    }[];
+interface Ingredient {
+  ingredient_id: number;
+  ingredient_name: string;
+  ingredient_url: string;
+  min_quantity: number;
+  max_quantity: number;
+  default_quantity: number;
+  unit: string;
+}
+
+interface MenuItem {
+  menu_id: number;
+  menu_name: string;
+  price: number;
+  duration: number;
+  calories: number;
+  level: string;
+  description: string;
+  menu_url: string;
+  ingredients: Ingredient[];
 }
 
 export default function Customize(){
@@ -53,10 +55,10 @@ export default function Customize(){
             setMenuItems(menuItemsResponse.data);
             setIngredientItems(menuItemsResponse.data.ingredients);
 
-            const initialCustomizationData = menuItemsResponse.data.ingredients.map((ingredient) => ({
-                ingredient_id: ingredient.ingredient_id,
-                adjusted_quantity: ingredient.default_quantity,
-              }));
+            const initialCustomizationData = menuItemsResponse.data.ingredients.map((ingredient: Ingredient) => ({
+              ingredient_id: ingredient.ingredient_id,
+              adjusted_quantity: ingredient.default_quantity,
+            }));
               setCustomizationData(initialCustomizationData);
           } catch (error) {
             console.log('error fetching data: ', error);
